@@ -7,24 +7,32 @@ import java.io.FileOutputStream;
 /* Написать Java программу, которое загружает изображение из Интернета и сохраняет в локальную папку */
 
 public class Networking {
-    public static void main(String s[]) throws IOException {
-
+    public static void main(String[] args) throws IOException {
         URL url = new URL("https://zvukobook.ru/800/600/https/toghr.com/wp-content/uploads/2020/04/171.png");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
-        InputStream in = con.getInputStream();
-        FileOutputStream out = new FileOutputStream("E:\\DOKU\\Java\\Streams\\image.png");
+        InputStream in = null;
+        FileOutputStream out = null;
 
-        byte[] buffer = new byte[1024];
-        int length;
+        try {
+            in = con.getInputStream();
+            out = new FileOutputStream("E:\\DOKU\\Java\\Streams\\image.png");
+            int length;
 
-        while ((length = in.read(buffer)) != -1)
-        {
-            out.write(buffer, 0, length);
+            while ((length = in.read()) != -1)
+            {
+                out.write(length);
+            }
         }
-        out.close();
-        in.close();
-        con.disconnect();
-    }
+        finally {
+            if (in != null) {
+                in.close();  // оба потока должны быть закрыты
+            }
+            if (out != null) {
+                out.close();
+            }
 
+            con.disconnect();
+        }
+    }
 }
