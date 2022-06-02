@@ -3,6 +3,7 @@ import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.spi.LoggerFactoryBinder;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
@@ -12,7 +13,8 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 public class CustomCarDeserializer extends StdDeserializer<Car>{
     private static final long serialVersionUID = -5918629454846356161L;
-    private final Logger Logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(CustomCarDeserializer.class);
+
 
     public CustomCarDeserializer() {
         this(null);
@@ -32,7 +34,7 @@ public class CustomCarDeserializer extends StdDeserializer<Car>{
             final String color = colorNode.asText();
             car.setColor(color);
         } catch (final Exception e) {
-            Logger.debug("101_parse_exeption: unknown json.");
+            logger.debug("101_parse_exeption: unknown json.");
         }
         return car;
     }
